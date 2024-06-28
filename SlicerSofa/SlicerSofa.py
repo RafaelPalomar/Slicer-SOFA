@@ -70,8 +70,10 @@ class SlicerSofaLogic(ScriptedLoadableModuleLogic):
         self._rootNode = None
         self._simulationRunning = False
         self._currentStep = 0
-        self._totaSteps = 0
+        self._totalSteps = 0
         self._dt = 0
+        self.initialgrid = []
+        self.startup = True
 
     def setupScene(self, parameterNode):
         """Setup the simulation scene."""
@@ -91,15 +93,17 @@ class SlicerSofaLogic(ScriptedLoadableModuleLogic):
         if self._sceneUp is True:
             self._simulationRunning = False
 
+    def resetSimulation(self, parameterNode=None) -> None:
+        pass
+
     def simulationStep(self, parameterNode=None) -> None:
         """Perform a single simulation step."""
-
         if self._sceneUp is False or self._simulationRunning is False:
            slicer.util.errorDisplay("Can't advance the simulation forward. Simulation is not running.")
            return
-
+        parameterNode.modelNode.GetUnstructuredGrid()
+        
         self.updateSofa(parameterNode)
-
         if self._currentStep < self._totalSteps:
             Sofa.Simulation.animate(self._rootNode, self._dt)
             self._currentStep += 1

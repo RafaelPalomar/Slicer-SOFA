@@ -231,6 +231,7 @@ class SoftTissueSimulationWidget(ScriptedLoadableModuleWidget, VTKObservationMix
 
         self.ui.startSimulationPushButton.connect("clicked()", self.startSimulation)
         self.ui.stopSimulationPushButton.connect("clicked()", self.stopSimulation)
+        self.ui.resetSimulationPushButton.connect("clicked()", self.resetSimulation)
         self.ui.addBoundaryROIPushButton.connect("clicked()", self.logic.addBoundaryROI)
         self.ui.addGravityVectorPushButton.connect("clicked()", self.logic.addGravityVector)
         self.ui.addMovingPointPushButton.connect("clicked()", self.logic.addMovingPoint)
@@ -298,7 +299,7 @@ class SoftTissueSimulationWidget(ScriptedLoadableModuleWidget, VTKObservationMix
 
     def startSimulation(self):
         self.logic.dt = self.ui.dtSpinBox.value
-        self.logic.totalSteps = self.ui.totalStepsSpinBox.value
+        self.logic._totalSteps = self.ui.totalStepsSpinBox.value
         self.logic.currentStep = self.ui.currentStepSpinBox.value
         self.logic.startSimulation()
         self.timer.start(0) #This timer drives the simulation updates
@@ -307,8 +308,14 @@ class SoftTissueSimulationWidget(ScriptedLoadableModuleWidget, VTKObservationMix
         self.timer.stop()
         self.logic.stopSimulation()
 
+    def resetSimulation(self):
+        self.timer.stop()
+        self.ui.currentStepSpinBox.value = 0
+        self.logic.resetSimulation()
+
     def simulationStep(self):
-       self.logic.simulationStep(self.parameterNode)
+        self.logic.simulationStep(self.parameterNode)
+        self.ui.currentStepSpinBox.value +=1
 
 #
 # SoftTissueSimulationLogic
@@ -330,6 +337,7 @@ class SoftTissueSimulationLogic(SlicerSofaLogic):
         self.connectionStatus = 0
         self.boxROI = None
         self.mouseInteractor = None
+        self.startup = True
 
     def updateSofa(self, parameterNode) -> None:
         if parameterNode is not None:
@@ -363,9 +371,11 @@ class SoftTissueSimulationLogic(SlicerSofaLogic):
         return self.simulationController
 
     def startSimulation(self) -> None:
+
         sequenceNode = self.getParameterNode().sequenceNode
         browserNode = self.getParameterNode().sequenceBrowserNode
         modelNode = self.getParameterNode().modelNode
+
         movingPointNode = self.getParameterNode().movingPointNode
 
         # Synchronize and set up the sequence browser node
@@ -375,6 +385,12 @@ class SoftTissueSimulationLogic(SlicerSofaLogic):
             browserNode.SetRecording(sequenceNode, True)
             browserNode.SetRecordingActive(True)
 
+
+        #if it's the first time running simulation, save the initial mesh points for reset
+        if self.startup:
+            self.startup = False
+            self.initialgrid = self.getParameterNode().getModelPointsArray()
+        
         super().startSimulation(self.getParameterNode())
         self._simulationRunning = True
         self.getParameterNode().Modified()
@@ -386,6 +402,21 @@ class SoftTissueSimulationLogic(SlicerSofaLogic):
         if browserNode is not None:
             browserNode.SetRecordingActive(False)
         self.getParameterNode().Modified()
+
+    def resetSimulation(self) -> None:
+        self.currentStep = 0
+        self.totalSteps = 0
+        #reset mesh
+        points_vtk = numpy_to_vtk(num_array=self.initialgrid, deep=True, array_type=vtk.VTK_FLOAT)
+        vtk_points = vtk.vtkPoints()
+        vtk_points.SetData(points_vtk)
+        self.getParameterNode().modelNode.GetUnstructuredGrid().SetPoints(vtk_points)
+        #reset simulation
+        self.stopSimulation()
+        self.clean()
+        self.createScene(self.getParameterNode())
+        
+
 
     def onModelNodeModified(self, caller, event) -> None:
         if self.getParameterNode().modelNode.GetUnstructuredGrid() is not None:
@@ -410,7 +441,6 @@ class SoftTissueSimulationLogic(SlicerSofaLogic):
             size = [abs(bounds[1] - bounds[0])/2.0, abs(bounds[3] - bounds[2])/2.0, abs(bounds[5] - bounds[4])/2.0]
             roiNode.SetXYZ(center)
             roiNode.SetRadiusXYZ(size[0], size[1], size[2])
-
         self.getParameterNode().boundaryROI = roiNode
 
     def addGravityVector(self) -> None:
@@ -531,7 +561,6 @@ class SoftTissueSimulationLogic(SlicerSofaLogic):
         from stlib3.physics.deformable import ElasticMaterialObject
         from stlib3.physics.rigid import Floor
         from splib3.numerics import Vec3
-
         rootNode = Sofa.Core.Node()
 
         MainHeader(rootNode, plugins=[
@@ -585,6 +614,7 @@ class SoftTissueSimulationLogic(SlicerSofaLogic):
         femNode.addObject('MechanicalObject', name="mstate", template="Vec3d")
         femNode.addObject('TetrahedronFEMForceField', name="FEM", youngModulus=1.5, poissonRatio=0.45, method="large")
         femNode.addObject('MeshMatrixMass', totalMass=1)
+
 
         fixedROI = femNode.addChild('FixedROI')
         self.BoxROI = fixedROI.addObject('BoxROI', template="Vec3", box=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0], drawBoxes=False,
