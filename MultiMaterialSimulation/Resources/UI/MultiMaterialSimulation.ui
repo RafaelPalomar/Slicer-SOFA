@@ -83,145 +83,13 @@
       </layout>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="simulationModelNodeLabel_2">
-       <property name="text">
-        <string>Shell static model:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <layout class="QHBoxLayout" name="horizontalLayout_11">
-       <item>
-        <widget class="qMRMLNodeComboBox" name="ShellStaticModelComboBox">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="nodeTypes">
-          <stringlist notr="true">
-           <string>vtkMRMLModelNode</string>
-          </stringlist>
-         </property>
-         <property name="showHidden">
-          <bool>false</bool>
-         </property>
-         <property name="hideChildNodeTypes">
-          <stringlist notr="true"/>
-         </property>
-         <property name="noneEnabled">
-          <bool>true</bool>
-         </property>
-         <property name="addEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="removeEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="editEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="renameEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="interactionNodeSingletonTag">
-          <string notr="true"/>
-         </property>
-         <property name="SlicerParameterName" stdset="0">
-          <string>shellStaticModelNode</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>31</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="simulationModelNodeLabel_3">
-       <property name="text">
-        <string>Shell moving model:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <layout class="QHBoxLayout" name="horizontalLayout_13">
-       <item>
-        <widget class="qMRMLNodeComboBox" name="ShellMovingModelComboBox">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="nodeTypes">
-          <stringlist notr="true">
-           <string>vtkMRMLModelNode</string>
-          </stringlist>
-         </property>
-         <property name="showHidden">
-          <bool>false</bool>
-         </property>
-         <property name="hideChildNodeTypes">
-          <stringlist notr="true"/>
-         </property>
-         <property name="noneEnabled">
-          <bool>true</bool>
-         </property>
-         <property name="addEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="removeEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="editEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="renameEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="interactionNodeSingletonTag">
-          <string notr="true"/>
-         </property>
-         <property name="SlicerParameterName" stdset="0">
-          <string>shellMovingModelNode</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_6">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>31</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </item>
-     <item row="3" column="0">
       <widget class="QLabel" name="boundaryROILabel">
        <property name="text">
         <string>Boundary ROI:</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
+     <item row="1" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="qMRMLNodeComboBox" name="boundaryROIComboBox">
@@ -274,14 +142,14 @@
        </item>
       </layout>
      </item>
-     <item row="4" column="0">
+     <item row="2" column="0">
       <widget class="QLabel" name="gravityVectorLabel">
        <property name="text">
         <string>Gravity Vector:</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
+     <item row="2" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <widget class="qMRMLNodeComboBox" name="gravityVectorComboBox">
@@ -350,83 +218,14 @@
        </item>
       </layout>
      </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="simulationModelNodeLabel_4">
-       <property name="text">
-        <string>LVAD Transform:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <layout class="QHBoxLayout" name="horizontalLayout_14">
-       <item>
-        <widget class="qMRMLNodeComboBox" name="LVADTransformComboBox">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="nodeTypes">
-          <stringlist notr="true">
-           <string>vtkMRMLTransformNode</string>
-          </stringlist>
-         </property>
-         <property name="showHidden">
-          <bool>false</bool>
-         </property>
-         <property name="hideChildNodeTypes">
-          <stringlist notr="true"/>
-         </property>
-         <property name="noneEnabled">
-          <bool>true</bool>
-         </property>
-         <property name="addEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="removeEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="editEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="renameEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="interactionNodeSingletonTag">
-          <string notr="true"/>
-         </property>
-         <property name="SlicerParameterName" stdset="0">
-          <string>LVADTransformNode</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="addLVADTransformPushButton">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>31</width>
-           <height>23</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>+</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="6" column="0">
+     <item row="3" column="0">
       <widget class="QLabel" name="recordingSequenceLabel">
        <property name="text">
         <string>Rec. Sequence:</string>
        </property>
       </widget>
      </item>
-     <item row="6" column="1">
+     <item row="3" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
         <widget class="qMRMLNodeComboBox" name="recordingSequenceComboBox">
@@ -483,7 +282,7 @@
      <item>
       <widget class="QPushButton" name="startSimulationPushButton">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="text">
         <string>Start Simulation</string>
@@ -636,7 +435,7 @@
   <connection>
    <sender>MultiMaterialSimulation</sender>
    <signal>mrmlSceneChanged(vtkMRMLScene*)</signal>
-   <receiver>recordingSequenceComboBox</receiver>
+   <receiver>gravityVectorComboBox</receiver>
    <slot>setMRMLScene(vtkMRMLScene*)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -644,8 +443,8 @@
      <y>277</y>
     </hint>
     <hint type="destinationlabel">
-     <x>215</x>
-     <y>141</y>
+     <x>183</x>
+     <y>86</y>
     </hint>
    </hints>
   </connection>
@@ -668,7 +467,7 @@
   <connection>
    <sender>MultiMaterialSimulation</sender>
    <signal>mrmlSceneChanged(vtkMRMLScene*)</signal>
-   <receiver>gravityVectorComboBox</receiver>
+   <receiver>recordingSequenceComboBox</receiver>
    <slot>setMRMLScene(vtkMRMLScene*)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -676,56 +475,8 @@
      <y>277</y>
     </hint>
     <hint type="destinationlabel">
-     <x>183</x>
-     <y>86</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>MultiMaterialSimulation</sender>
-   <signal>mrmlSceneChanged(vtkMRMLScene*)</signal>
-   <receiver>LVADTransformComboBox</receiver>
-   <slot>setMRMLScene(vtkMRMLScene*)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>242</x>
-     <y>277</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>288</x>
-     <y>178</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>MultiMaterialSimulation</sender>
-   <signal>mrmlSceneChanged(vtkMRMLScene*)</signal>
-   <receiver>ShellMovingModelComboBox</receiver>
-   <slot>setMRMLScene(vtkMRMLScene*)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>242</x>
-     <y>277</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>288</x>
-     <y>84</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>MultiMaterialSimulation</sender>
-   <signal>mrmlSceneChanged(vtkMRMLScene*)</signal>
-   <receiver>ShellStaticModelComboBox</receiver>
-   <slot>setMRMLScene(vtkMRMLScene*)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>242</x>
-     <y>277</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>288</x>
-     <y>53</y>
+     <x>215</x>
+     <y>141</y>
     </hint>
    </hints>
   </connection>
