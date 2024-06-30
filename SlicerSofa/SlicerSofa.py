@@ -37,7 +37,7 @@ class SlicerSofa(ScriptedLoadableModule):
         self.parent.contributors = [ "Rafael Palomar (Oslo University Hospital, Norway), Paul Baksic (INRIA, France), Steve Pieper (Isomics, Inc., USA), Andras Lasso (Queen's University, Canada), Sam Horvath (Kitware, Inc., USA), Jean Christophe Fillion-Robin (Kitware, Inc., USA)"]
         self.parent.helpText = _("""
 This is a support module to enable simulations using the SOFA framework
-See more information in <a href="https://github.com/RafaelPalomar/Slicer-SOFA">module documentation</a>.
+See more information in <a href="https://github.com/RafaelPalomar/SlicerSOFA">module documentation</a>.
 """)
         # TODO: replace with organization, grant and thanks
         self.parent.acknowledgementText = _("""

@@ -1,15 +1,15 @@
 cmake_minimum_required(VERSION 3.16.3...3.19.7 FATAL_ERROR)
 
-project(Sofa)
+project(SlicerSOFA)
 
 #-----------------------------------------------------------------------------
 # Extension meta-information
-set(EXTENSION_HOMEPAGE "https://github.com/RafaelPalomar/Slicer-SOFA")
+set(EXTENSION_HOMEPAGE "https://github.com/RafaelPalomar/SlicerSOFA")
 set(EXTENSION_CATEGORY "Simulation")
 set(EXTENSION_CONTRIBUTORS "Rafael Palomar (Oslo University Hospital, Norway), Paul Baksic (INRIA, France), Steve Pieper (Isomics, Inc., USA), Andras Lasso (Queen's University, Canada), Sam Horvath (Kitware, Inc., USA), Jean Christophe Fillion-Robin (Kitware, Inc., USA)")
 set(EXTENSION_DESCRIPTION "This extension enables simulations using the SOFA framework")
-set(EXTENSION_ICONURL "https://github.com/RafaelPalomar/Slicer-SOFA/blob/main/slicer-sofa-logo.png")
-set(EXTENSION_SCREENSHOTURLS "https://github.com/RafaelPalomar/Slicer-SOFA/blob/main/Screenshots/SoftTissueSimulationScreenshot_1.png")
+set(EXTENSION_ICONURL "https://raw.githubusercontent.com/RafaelPalomar/SlicerSOFA/main/slicer-sofa-logo.png")
+set(EXTENSION_SCREENSHOTURLS "https://raw.githubusercontent.com/RafaelPalomar/SlicerSOFA/main/Screenshots/SoftTissueSimulationScreenshot_1.png")
 set(EXTENSION_DEPENDS "NA") # Specified as a list or "NA" if no dependencies
 
 set(EXTENSION_BUILD_SUBDIRECTORY inner-build)
@@ -41,12 +41,23 @@ add_subdirectory(SoftTissueSimulation)
 
 #-----------------------------------------------------------------------------
 set(EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS)
+if(NOT APPLE)
+  list(APPEND EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS "${EXTENSION_SUPERBUILD_BINARY_DIR}/GLEW-build;glew;Runtime;/")
+endif()
+list(APPEND EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS "${Sofa_DIR};Sofa;ALL;/")
 set(${EXTENSION_NAME}_CPACK_INSTALL_CMAKE_PROJECTS "${EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS}" CACHE STRING "List of external projects to install" FORCE)
 
+if(APPLE)
+  set(EXTENSION_FIXUP_BUNDLE_LIBRARY_DIRECTORIES)
+
+  # GLEW
+  set(GLEW_RUNTIME_LIBRARY_DIR "${EXTENSION_SUPERBUILD_BINARY_DIR}/GLEW-install/${Slicer_INSTALL_THIRDPARTY_LIB_DIR}")
+  list(APPEND EXTENSION_FIXUP_BUNDLE_LIBRARY_DIRECTORIES ${GLEW_RUNTIME_LIBRARY_DIR})
+
+  set(${EXTENSION_NAME}_FIXUP_BUNDLE_LIBRARY_DIRECTORIES "${EXTENSION_FIXUP_BUNDLE_LIBRARY_DIRECTORIES}" CACHE STRING "List of directories to look up libraries to copy into the application package" FORCE)
+endif()
+
 #-----------------------------------------------------------------------------
-list(APPEND EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS "${TinyXML2_DIR};TinyXML2;tinyxml2_runtime;/")
-list(APPEND EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS "${Sofa_DIR};ALL;ALL;/")
-set(${EXTENSION_NAME}_CPACK_INSTALL_CMAKE_PROJECTS "${EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS}" CACHE STRING "List of external projects to install" FORCE)
 list(APPEND CPACK_INSTALL_CMAKE_PROJECTS "${CMAKE_BINARY_DIR};${EXTENSION_NAME};ALL;/")
 list(APPEND CPACK_INSTALL_CMAKE_PROJECTS "${${EXTENSION_NAME}_CPACK_INSTALL_CMAKE_PROJECTS}")
 include(${Slicer_EXTENSION_GENERATE_CONFIG})

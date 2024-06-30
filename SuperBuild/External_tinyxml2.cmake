@@ -1,4 +1,4 @@
-set(proj TinyXML2)
+set(proj tinyxml2)
 
 # Set dependency list
 set(${proj}_DEPENDS
@@ -13,8 +13,8 @@ if(${SUPERBUILD_TOPLEVEL_PROJECT}_USE_SYSTEM_${proj})
 endif()
 
 # Sanity checks
-if(DEFINED TinyXML2_DIR AND NOT EXISTS ${TinyXML2_DIR})
-  message(FATAL_ERROR "TinyXML2_DIR [${TinyXML2_DIR}] variable is defined but corresponds to nonexistent directory")
+if(DEFINED tinyxml2_DIR AND NOT EXISTS ${tinyxml2_DIR})
+  message(FATAL_ERROR "tinyxml2_DIR [${tinyxml2_DIR}] variable is defined but corresponds to nonexistent directory")
 endif()
 
 if(NOT DEFINED ${proj}_DIR AND NOT ${SUPERBUILD_TOPLEVEL_PROJECT}_USE_SYSTEM_${proj})
@@ -29,6 +29,7 @@ if(NOT DEFINED ${proj}_DIR AND NOT ${SUPERBUILD_TOPLEVEL_PROJECT}_USE_SYSTEM_${p
     SOURCE_DIR ${EP_SOURCE_DIR}
     BINARY_DIR ${EP_BINARY_DIR}
     CMAKE_CACHE_ARGS
+      # Compiler settings
       -DCMAKE_C_COMPILER:FILEPATH=${CMAKE_C_COMPILER}
       -DCMAKE_C_FLAGS:STRING=${ep_common_c_flags}
       -DCMAKE_CXX_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}
@@ -36,12 +37,15 @@ if(NOT DEFINED ${proj}_DIR AND NOT ${SUPERBUILD_TOPLEVEL_PROJECT}_USE_SYSTEM_${p
       -DCMAKE_CXX_STANDARD:STRING=${CMAKE_CXX_STANDARD}
       -DCMAKE_CXX_STANDARD_REQUIRED:BOOL=${CMAKE_CXX_STANDARD_REQUIRED}
       -DCMAKE_CXX_EXTENSIONS:BOOL=${CMAKE_CXX_EXTENSIONS}
+      # Options
       -DBUILD_TESTING:BOOL=OFF
-      -Dtinyxml2_SHARED_LIBS:BOOL=ON
+      -Dtinyxml2_SHARED_LIBS:BOOL=OFF
+      -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
       # Output directory
       -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:PATH=${CMAKE_BINARY_DIR}/${Slicer_THIRDPARTY_BIN_DIR}
       -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:PATH=${CMAKE_BINARY_DIR}/${Slicer_THIRDPARTY_LIB_DIR}
       -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY:PATH=${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
+      # Install directories
       -DCMAKE_INSTALL_LIBDIR:PATH=${Slicer_THIRDPARTY_LIB_DIR}
     DEPENDS
       ${${proj}_DEPENDS}
@@ -49,8 +53,27 @@ if(NOT DEFINED ${proj}_DIR AND NOT ${SUPERBUILD_TOPLEVEL_PROJECT}_USE_SYSTEM_${p
     )
   set(${proj}_DIR ${EP_BINARY_DIR})
 
+  set(${proj}_INCLUDE_DIR ${EP_SOURCE_DIR})
+
+  if(DEFINED CMAKE_CONFIGURATION_TYPES)
+    set(lib_cfg_dir "$<CONFIG>")
+  else()
+    set(lib_cfg_dir ".")
+  endif()
+  if(WIN32)
+    set(${proj}_LIBRARY ${EP_BINARY_DIR}/${lib_cfg_dir}/tinyxml2.lib)
+  else()
+    set(${proj}_LIBRARY ${EP_BINARY_DIR}/${lib_cfg_dir}/libtinyxml2.a)
+  endif()
+
 else()
   ExternalProject_Add_Empty(${proj} DEPENDS ${${proj}_DEPENDS})
 endif()
 
 mark_as_superbuild(${proj}_DIR:PATH)
+
+mark_as_superbuild(
+  VARS
+    ${proj}_INCLUDE_DIR:PATH
+    ${proj}_LIBRARY:FILEPATH
+  )
